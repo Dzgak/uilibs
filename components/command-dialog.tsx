@@ -24,6 +24,10 @@ interface Library {
   gallery: string[]
   created_at: string
   updated_at: string
+  tags: string[]
+  is_paid: boolean
+  is_mobile_friendly: boolean
+  user_id: string
 }
 
 interface CommandDialogProps {

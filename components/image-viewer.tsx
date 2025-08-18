@@ -110,13 +110,12 @@ export function ImageViewer({
         )}
 
         {/* Main image */}
-        <div className="relative w-full h-full max-w-5xl max-h-[90vh]">
+        <div className="relative w-full h-full max-w-5xl max-h-[90vh] flex items-center justify-center">
           <img
             src={getImageUrl(images[currentIndex])}
             alt={`Image ${currentIndex + 1}`}
-            // fill
-            className="object-contain"
-            // priority
+            className="max-w-full max-h-full object-contain"
+            style={{ width: 'auto', height: 'auto' }}
           />
         </div>
 
@@ -143,8 +142,7 @@ export function ImageViewer({
                 <img
                   src={getImageUrl(image)}
                   alt={`Thumbnail ${index + 1}`}
-                  // fill
-                  className="object-cover"
+                  className="w-full h-full object-cover"
                 />
               </button>
             ))}

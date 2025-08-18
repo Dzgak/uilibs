@@ -62,6 +62,7 @@ interface Library {
   tags: string[]
   is_paid: boolean
   is_mobile_friendly: boolean
+  user_id: string
 }
 
 export default function HomePage() {
@@ -70,6 +71,7 @@ export default function HomePage() {
   const [libraries, setLibraries] = useState<Library[]>([])
   const [loading, setLoading] = useState(true)
   const [isAdmin, setIsAdmin] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [commandOpen, setCommandOpen] = useState(false)
   const [filterDialogOpen, setFilterDialogOpen] = useState(false)
   const [searchInput, setSearchInput] = useState(searchParams.get('search') || "")
@@ -98,9 +100,10 @@ export default function HomePage() {
     const fetchLibraries = async () => {
       const supabase = createClient()
       
-      // Check if user is admin
+      // Check if user is authenticated and admin
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
+        setIsAuthenticated(true)
         const { data: profile } = await supabase
           .from("profiles")
           .select("role")
@@ -317,11 +320,11 @@ export default function HomePage() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              {isAdmin && (
+              {isAuthenticated && (
                 <Button onClick={() => router.push('/admin/new')} className="mr-2">
                   <Plus className="w-4 h-4 mr-2" />
-                  <span className="hidden sm:inline">New Library</span>
-                  <span className="sm:hidden">New</span>
+                  <span className="hidden sm:inline">Upload Library</span>
+                  <span className="sm:hidden">Upload</span>
                 </Button>
               )}
               <ThemeToggle />
@@ -353,7 +356,7 @@ export default function HomePage() {
                     }}>
                       {sug.type==='lib' ? (
                         <>
-                          <div className="relative w-10 h-10 flex-shrink-0 bg-muted rounded overflow-hidden">
+                          <div className="relative w-10 h-10 flex-shrink-0 bg-muted rounded overflow-hidden flex items-center justify-center">
                             {sug.library.preview && (
                               <Image src={
                                 sug.library.preview.startsWith('http') ? sug.library.preview : `https://pamgxjfckwyvefsnbtfp.supabase.co/storage/v1/object/public/libraries/${sug.library.preview}`

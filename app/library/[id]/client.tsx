@@ -47,6 +47,7 @@ interface Library {
   tags: string[];
   is_paid: boolean;
   is_mobile_friendly: boolean;
+  user_id: string;
 }
 
 interface PageProps {
@@ -60,6 +61,8 @@ export default function LibraryPageClient({ id }: PageProps) {
   const [library, setLibrary] = useState<Library | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [canEdit, setCanEdit] = useState(false);
   const { isFavorite, toggleFavorite } = useFavorites();
   const favorite = library ? isFavorite(library.id) : false;
 
@@ -74,15 +77,18 @@ export default function LibraryPageClient({ id }: PageProps) {
       try {
         const supabase = createClient();
         
-        // Check if user is admin
+        // Check if user is admin and get current user
         const { data: { user } } = await supabase.auth.getUser();
+        let userIsAdmin = false;
         if (user) {
+          setCurrentUserId(user.id);
           const { data: profile } = await supabase
             .from("profiles")
             .select("role")
             .eq("id", user.id)
             .single();
-          setIsAdmin(profile?.role === "admin");
+          userIsAdmin = profile?.role === "admin";
+          setIsAdmin(userIsAdmin);
         }
 
         const { data, error } = await supabase
@@ -93,6 +99,11 @@ export default function LibraryPageClient({ id }: PageProps) {
 
         if (error) throw error;
         setLibrary(data);
+        
+        // Check if current user can edit this library
+        if (user && (userIsAdmin || data.user_id === user.id)) {
+          setCanEdit(true);
+        }
       } catch (error) {
         console.error("Error fetching library:", error);
         notFound();
@@ -247,7 +258,7 @@ export default function LibraryPageClient({ id }: PageProps) {
                   </Button>
                 </Link>
               )}
-              {isAdmin && (
+              {canEdit && (
                 <>
                   <Link href={`/admin/${library.id}`}>
                     <Button size="sm" variant="outline" className="h-8 sm:h-9">
@@ -287,15 +298,13 @@ export default function LibraryPageClient({ id }: PageProps) {
           {/* Hero Image with Badges */}
           {library.preview && (
             <div
-              className="relative aspect-[16/9] bg-muted rounded-lg overflow-hidden cursor-pointer group"
+              className="relative aspect-[16/9] bg-muted rounded-lg overflow-hidden cursor-pointer group flex items-center justify-center"
               onClick={() => openImageViewer(0)}
             >
               <img
                 src={getImageUrl(library.preview)}
                 alt={`${library.name} preview`}
-                // fill
-                className="object-cover group-hover:scale-105 transition-transform duration-300"
-                // priority
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
               {/* Badges Overlay */}
               <div className="absolute top-3 sm:top-4 left-3 sm:left-4 z-10">
@@ -329,14 +338,13 @@ export default function LibraryPageClient({ id }: PageProps) {
                 {library.gallery.map((image, index) => (
                   <div
                     key={index}
-                    className="relative aspect-video bg-muted rounded overflow-hidden cursor-pointer group"
+                    className="relative aspect-video bg-muted rounded overflow-hidden cursor-pointer group flex items-center justify-center"
                     onClick={() => openImageViewer(index + 1)}
                   >
                     <img
                       src={getImageUrl(image)}
                       alt={`${library.name} example ${index + 1}`}
-                      // fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-200" />
                   </div>
