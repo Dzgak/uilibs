@@ -30,7 +30,7 @@ export default function ChangelogClient({ entries }: { entries: ChangelogEntry[]
                 className={`w-full max-w-[560px] text-left rounded px-3 py-2 text-sm hover:bg-muted transition-colors overflow-hidden ${
                   i === activeIdx ? "bg-muted" : ""
                 }`}
-                style={{ maxWidth: '560px' }}
+                style={{ maxWidth: '360px' }}
               >
                 <div className="flex flex-col min-w-0">
                   <span className="block font-medium truncate text-ellipsis" style={{ maxWidth: '560px' }}>
