@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Search, Filter, Plus, X, SortAsc } from "lucide-react"
 import { CommandDialog } from "@/components/command-dialog"
+import { NotificationBanner } from "@/components/ui/notification-banner"
 import { ThemeToggle } from "@/components/theme-toggle"
 import {
   Pagination,
@@ -72,6 +73,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true)
   const [isAdmin, setIsAdmin] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
   const [commandOpen, setCommandOpen] = useState(false)
   const [filterDialogOpen, setFilterDialogOpen] = useState(false)
   const [searchInput, setSearchInput] = useState(searchParams.get('search') || "")
@@ -104,6 +106,7 @@ export default function HomePage() {
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
         setIsAuthenticated(true)
+        setCurrentUserId(user.id)
         const { data: profile } = await supabase
           .from("profiles")
           .select("role")
@@ -323,8 +326,8 @@ export default function HomePage() {
               {isAuthenticated && (
                 <Button onClick={() => router.push('/admin/new')} className="mr-2">
                   <Plus className="w-4 h-4 mr-2" />
-                  <span className="hidden sm:inline">Upload Library</span>
-                  <span className="sm:hidden">Upload</span>
+                  <span className="hidden sm:inline">Submit Library</span>
+                  <span className="sm:hidden">Submit</span>
                 </Button>
               )}
               <ThemeToggle />
@@ -584,6 +587,10 @@ export default function HomePage() {
           router.push(`/library/${library.id}`)
         }}
       />
+
+      {isAuthenticated && currentUserId && (
+        <NotificationBanner userId={currentUserId} />
+      )}
     </div>
   )
 }

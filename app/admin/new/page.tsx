@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/client"
 import { Button } from "@/components/ui/button"
@@ -14,6 +14,7 @@ import { Switch } from "@/components/ui/switch"
 import { Badge } from "@/components/ui/badge"
 import { MarkdownEditor } from "@/components/ui/markdown-editor"
 import { ImageManager } from "@/components/ui/image-manager"
+import { TermsOfService } from "@/components/ui/terms-of-service"
 
 export default function NewLibraryPage() {
   const router = useRouter()
@@ -36,6 +37,8 @@ export default function NewLibraryPage() {
     preview: null,
     gallery: [],
   })
+  const [showTerms, setShowTerms] = useState(false)
+  const [isFirstTime, setIsFirstTime] = useState(false)
 
   // Generate a unique folder name for this library
   const folderName = formData.name 
@@ -52,6 +55,34 @@ export default function NewLibraryPage() {
       console.error("Upload error:", error)
     }
   })
+
+  // Check if user is first time and show terms
+  useEffect(() => {
+    const checkFirstTime = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        // Check if user has any existing libraries or submissions
+        const { data: existingLibraries } = await supabase
+          .from("libraries")
+          .select("id")
+          .eq("user_id", user.id)
+          .limit(1)
+        
+        const { data: existingSubmissions } = await supabase
+          .from("pending_submissions")
+          .select("id")
+          .eq("user_id", user.id)
+          .limit(1)
+        
+        if (!existingLibraries?.length && !existingSubmissions?.length) {
+          setIsFirstTime(true)
+          setShowTerms(true)
+        }
+      }
+    }
+    
+    checkFirstTime()
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -90,10 +121,10 @@ export default function NewLibraryPage() {
         }
       }
       
-      // Then create library entry
-      const { error } = await supabase.from("libraries").insert({
+      // Then create pending submission entry
+      const { error } = await supabase.from("pending_submissions").insert({
         ...formData,
-        // user_id: user.id, // Temporarily commented out until migration is applied
+        user_id: user.id,
         preview: uploadProps.files[0] ? `libs/${folderName}/${uploadProps.files[0].name}` : null,
         gallery: uploadProps.files.slice(1).map(f => `libs/${folderName}/${f.name}`),
       })
@@ -103,7 +134,7 @@ export default function NewLibraryPage() {
         throw error
       }
 
-      router.push("/admin")
+      router.push("/admin?submitted=true")
     } catch (error) {
       console.error("Error creating library:", error)
       // You might want to show an error message to the user here
@@ -153,7 +184,7 @@ export default function NewLibraryPage() {
           </Button>
         </Link>
 
-        <h1 className="text-3xl font-bold mb-8">Add New Library</h1>
+        <h1 className="text-3xl font-bold mb-8">Submit Library for Review</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
@@ -271,9 +302,15 @@ export default function NewLibraryPage() {
           </div>
 
           <Button type="submit" disabled={loading || uploadProps.loading || !formData.name}>
-            {loading ? "Creating..." : "Create Library"}
+            {loading ? "Submitting..." : "Submit for Review"}
           </Button>
         </form>
+
+        <TermsOfService
+          open={showTerms}
+          onAccept={() => setShowTerms(false)}
+          onDecline={() => router.push("/admin")}
+        />
       </div>
     </div>
   )

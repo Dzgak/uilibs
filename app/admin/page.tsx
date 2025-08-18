@@ -1,10 +1,11 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useSearchParams } from "next/navigation"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/client"
 import { Button } from "@/components/ui/button"
-import { Plus, Pencil, Trash2 } from "lucide-react"
+import { Plus, Pencil, Trash2, Clock, Check, X, Eye } from "lucide-react"
 import Link from "next/link"
 import {
   AlertDialog,
@@ -29,10 +30,12 @@ interface Library {
 
 export default function AdminPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [isAdmin, setIsAdmin] = useState(false)
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [libraries, setLibraries] = useState<Library[]>([])
+  const [showSuccess, setShowSuccess] = useState(false)
   const supabase = createClient()
 
   useEffect(() => {
@@ -77,7 +80,14 @@ export default function AdminPage() {
     }
 
     checkUserAndFetchLibraries()
-  }, [router])
+
+    // Check if user just submitted a library
+    if (searchParams.get('submitted') === 'true') {
+      setShowSuccess(true)
+      // Remove the query parameter
+      router.replace('/admin')
+    }
+  }, [router, searchParams])
 
   const handleDelete = async (id: string) => {
     try {
@@ -101,6 +111,28 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen p-8">
       <div className="max-w-6xl mx-auto">
+        {showSuccess && (
+          <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+            <div className="flex items-center">
+              <Check className="w-5 h-5 text-green-600 mr-2" />
+              <div>
+                <h3 className="text-sm font-medium text-green-800">Library Submitted Successfully!</h3>
+                <p className="text-sm text-green-700 mt-1">
+                  Your library has been submitted for review. You'll be notified once it's approved.
+                </p>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowSuccess(false)}
+                className="ml-auto text-green-600 hover:text-green-800"
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        )}
+
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold">
@@ -112,12 +144,28 @@ export default function AdminPage() {
               </p>
             )}
           </div>
-          <Link href="/admin/new">
-            <Button>
-              <Plus className="w-4 h-4 mr-2" />
-              New Library
-            </Button>
-          </Link>
+          <div className="flex gap-4">
+            {isAdmin && (
+              <Link href="/admin/moderation">
+                <Button variant="outline">
+                  <Clock className="w-4 h-4 mr-2" />
+                  Moderation
+                </Button>
+              </Link>
+            )}
+            <Link href="/admin/submissions">
+              <Button variant="outline">
+                <Eye className="w-4 h-4 mr-2" />
+                My Submissions
+              </Button>
+            </Link>
+            <Link href="/admin/new">
+              <Button>
+                <Plus className="w-4 h-4 mr-2" />
+                New Library
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {libraries.length === 0 ? (
