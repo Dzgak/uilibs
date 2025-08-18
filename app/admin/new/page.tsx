@@ -93,7 +93,7 @@ export default function NewLibraryPage() {
       // Then create library entry
       const { error } = await supabase.from("libraries").insert({
         ...formData,
-        user_id: user.id,
+        // user_id: user.id, // Temporarily commented out until migration is applied
         preview: uploadProps.files[0] ? `libs/${folderName}/${uploadProps.files[0].name}` : null,
         gallery: uploadProps.files.slice(1).map(f => `libs/${folderName}/${f.name}`),
       })
