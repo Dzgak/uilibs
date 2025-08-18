@@ -18,7 +18,7 @@ export default function ChangelogClient({ entries }: { entries: ChangelogEntry[]
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 flex flex-col lg:flex-row gap-6 lg:gap-12">
       {/* Sidebar */}
-      <aside className="lg:w-68 lg:flex-shrink-0 w-full">
+      <aside className="lg:w-68 lg:flex-shrink-0 w-full max-w-[560px]">
         <div className="text-lg font-semibold mb-2">Changelog</div>
         <Separator className="mb-4" />
         <ScrollArea className="h-[40vh] lg:h-[70vh] pr-3">
@@ -27,16 +27,16 @@ export default function ChangelogClient({ entries }: { entries: ChangelogEntry[]
               <button
                 key={rel.version}
                 onClick={() => setActiveIdx(i)}
-                className={`w-full max-w-full text-left rounded px-3 py-2 text-sm hover:bg-muted transition-colors overflow-hidden ${
+                className={`w-full max-w-[560px] text-left rounded px-3 py-2 text-sm hover:bg-muted transition-colors overflow-hidden ${
                   i === activeIdx ? "bg-muted" : ""
                 }`}
-                style={{ maxWidth: '100%' }}
+                style={{ maxWidth: '560px' }}
               >
                 <div className="flex flex-col min-w-0">
-                  <span className="block font-medium truncate text-ellipsis" style={{ maxWidth: '100%' }}>
+                  <span className="block font-medium truncate text-ellipsis" style={{ maxWidth: '560px' }}>
                     {rel.title}
                   </span>
-                  <span className="block text-xs text-muted-foreground truncate text-ellipsis" style={{ maxWidth: '100%' }}>
+                  <span className="block text-xs text-muted-foreground truncate text-ellipsis" style={{ maxWidth: '560px' }}>
                     v{rel.version} • {format(new Date(rel.date), "d MMM yyyy")}
                   </span>
                 </div>
