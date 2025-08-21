@@ -7,7 +7,6 @@ import { Analytics } from "@vercel/analytics/next"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ConsentBanner } from "@/components/ui/consent-banner"
-import { Scripts } from "@/components/ui/scripts"
 
 const inter = Inter({ subsets: ["latin"] })
 

@@ -29,7 +29,6 @@ import { Badge } from "@/components/ui/badge";
 import { createClient } from "@/lib/client";
 import { useFavorites } from "@/hooks/use-favorites";
 import { cn } from "@/lib/utils";
-import { AdSense } from "@/components/ui/adsense";
 
 interface Library {
   id: string;
@@ -384,15 +383,6 @@ export default function LibraryPageClient({ id }: PageProps) {
               </div>
             </>
           )}
-
-          {/* AdSense Ad - Bottom of Content */}
-          <div className="mt-8 flex justify-center">
-            <AdSense 
-              adSlot="1119370854" 
-              className="w-full max-w-4xl"
-              style={{ minHeight: "90px" }}
-            />
-          </div>
         </div>
       </main>
 
