@@ -7,6 +7,77 @@ A modern, community-driven platform for discovering and sharing Roblox UI compon
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)
 ![Supabase](https://img.shields.io/badge/Supabase-Latest-green)
 
+## 🤝 How to Support
+
+### Financial Support
+
+If you find this project helpful, consider supporting its development:
+
+- **PayPal (Family & Friends)**: dev.xrer@gmail.com
+- **LTC**: LbWTXDo5oSN2PSjUf4GqZTBM89178rtNbv
+
+### Contributing
+
+We welcome contributions! Here's how you can help:
+
+#### 🐛 Report Bugs
+1. Check existing issues first
+2. Create a new issue with:
+   - Clear description of the problem
+   - Steps to reproduce
+   - Expected vs actual behavior
+   - Screenshots if applicable
+
+#### 💡 Suggest Features
+1. Check existing feature requests
+2. Create a new issue with:
+   - Clear description of the feature
+   - Use cases and benefits
+   - Mockups or examples if possible
+
+#### 🔧 Submit Code
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+#### 📚 Improve Documentation
+- Fix typos and grammar
+- Add missing information
+- Create tutorials and guides
+- Translate to other languages
+
+#### 🎨 Design & UX
+- Improve user interface
+- Create new components
+- Optimize for accessibility
+- Add animations and interactions
+
+### Community
+
+- **Discord**: https://discord.gg/AM4ZMgZJtV
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- **Supabase** for the amazing backend platform
+- **Next.js** for the excellent React framework
+- **Tailwind CSS** for the utility-first styling
+- **All contributors** who help improve this project
+
+
+
+---
+
+**Made with ❤️ by XRER**
+
+*If you find this project useful, please give it a ⭐ on GitHub!*
+
+
 ## 🌟 Features
 
 ### For Users
@@ -73,33 +144,6 @@ A modern, community-driven platform for discovering and sharing Roblox UI compon
 
 6. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
-
-## 🏗️ Project Structure
-
-```
-uilibs-main/
-├── app/                          # Next.js app directory
-│   ├── admin/                    # Admin panel routes
-│   │   ├── page.tsx             # Admin dashboard
-│   │   ├── new/                 # New library form
-│   │   └── [id]/                # Edit library form
-│   ├── library/                 # Library viewing routes
-│   │   └── [id]/                # Individual library pages
-│   ├── auth/                    # Authentication routes
-│   └── page.tsx                 # Home page
-├── components/                   # Reusable UI components
-│   ├── ui/                      # Base UI components
-│   ├── app/                     # App-specific components
-│   └── ...                      # Other components
-├── lib/                         # Utility libraries
-│   ├── client.ts                # Supabase client
-│   ├── server.ts                # Server-side utilities
-│   └── middleware.ts            # Route middleware
-├── hooks/                       # Custom React hooks
-├── supabase/                    # Database migrations
-│   └── migrations/              # SQL migration files
-└── public/                      # Static assets
-```
 
 ## 🔧 How It Works
 
@@ -224,19 +268,6 @@ npm run type-check   # Run TypeScript checks
 - **Prettier**: Automatic code formatting
 - **Conventional Commits**: Standard commit message format
 
-### Testing
-
-```bash
-# Run tests (when implemented)
-npm run test
-
-# Run tests in watch mode
-npm run test:watch
-
-# Run tests with coverage
-npm run test:coverage
-```
-
 ## 🚀 Deployment
 
 ### Vercel (Recommended)
@@ -256,72 +287,3 @@ npm run test:coverage
 - **Netlify**: Similar to Vercel setup
 - **Railway**: Good for full-stack deployments
 - **DigitalOcean**: Manual deployment with Docker
-
-## 🤝 How to Support
-
-### Financial Support
-
-If you find this project helpful, consider supporting its development:
-
-- **PayPal (Family & Friends)**: dev.xrer@gmail.com
-
-### Contributing
-
-We welcome contributions! Here's how you can help:
-
-#### 🐛 Report Bugs
-1. Check existing issues first
-2. Create a new issue with:
-   - Clear description of the problem
-   - Steps to reproduce
-   - Expected vs actual behavior
-   - Screenshots if applicable
-
-#### 💡 Suggest Features
-1. Check existing feature requests
-2. Create a new issue with:
-   - Clear description of the feature
-   - Use cases and benefits
-   - Mockups or examples if possible
-
-#### 🔧 Submit Code
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
-#### 📚 Improve Documentation
-- Fix typos and grammar
-- Add missing information
-- Create tutorials and guides
-- Translate to other languages
-
-#### 🎨 Design & UX
-- Improve user interface
-- Create new components
-- Optimize for accessibility
-- Add animations and interactions
-
-### Community
-
-- **Discord**: https://discord.gg/AM4ZMgZJtV
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Supabase** for the amazing backend platform
-- **Next.js** for the excellent React framework
-- **Tailwind CSS** for the utility-first styling
-- **All contributors** who help improve this project
-
-
-
----
-
-**Made with ❤️ by XRER**
-
-*If you find this project useful, please give it a ⭐ on GitHub!*
