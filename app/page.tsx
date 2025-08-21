@@ -43,7 +43,7 @@ import { Separator } from "@/components/ui/separator"
 import Image from "next/image"
 import { Badge as UIBadge } from "@/components/ui/badge"
 
-const ITEMS_PER_PAGE = 6
+const ITEMS_PER_PAGE = 9
 
 type SortOption = "newest" | "oldest" | "name" | "author"
 
