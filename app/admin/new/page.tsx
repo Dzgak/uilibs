@@ -97,6 +97,10 @@ export default function NewLibraryPage() {
 
       // First upload images
       if (uploadProps.files.length > 0) {
+        console.log("Starting file upload...")
+        console.log("Files to upload:", uploadProps.files.length)
+        console.log("Folder name:", folderName)
+        
         // Delete any existing files in the folder first
         if (folderName) {
           const { data: existingFiles } = await supabase.storage
@@ -115,6 +119,9 @@ export default function NewLibraryPage() {
         }
 
         await uploadProps.onUpload()
+        console.log("Upload completed")
+        console.log("Upload errors:", uploadProps.errors)
+        
         // Check if there are any errors after upload
         if (uploadProps.errors.length > 0) {
           throw new Error("Failed to upload images: " + uploadProps.errors.map(e => e.message).join(", "))
@@ -122,15 +129,25 @@ export default function NewLibraryPage() {
       }
       
       // Then create pending submission entry
-      const { error } = await supabase.from("pending_submissions").insert({
+      console.log("Creating pending submission...")
+      console.log("User ID:", user.id)
+      console.log("Form data:", formData)
+      
+      const submissionData = {
         ...formData,
         user_id: user.id,
         preview: uploadProps.files[0] ? `libs/${folderName}/${uploadProps.files[0].name}` : null,
         gallery: uploadProps.files.slice(1).map(f => `libs/${folderName}/${f.name}`),
-      })
+      }
+      
+      console.log("Submission data:", submissionData)
+      
+      const { error } = await supabase.from("pending_submissions").insert(submissionData)
 
       if (error) {
         console.error("Database error:", error)
+        console.error("User ID:", user.id)
+        console.error("Form data:", formData)
         throw error
       }
 
